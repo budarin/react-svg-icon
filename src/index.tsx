@@ -1,6 +1,6 @@
 import type { SVGProps } from 'react';
 
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 
 interface IconProps extends SVGProps<SVGSVGElement> {
     url: string;
@@ -16,9 +16,14 @@ const SPRITE_STYLE =
 
 export function SvgIcon({ url, size = DEFAULT_SIZE, ...props }: IconProps) {
     const name = url;
-    const loadingRef = useRef<boolean>(false);
 
     useEffect(() => {
+        if (loadedIcons.has(name)) {
+            return;
+        }
+
+        loadedIcons.add(name);
+
         let sprite = document.getElementById(SPRITE_ID) as SVGSVGElement | null;
 
         if (!sprite) {
@@ -37,50 +42,39 @@ export function SvgIcon({ url, size = DEFAULT_SIZE, ...props }: IconProps) {
             document.body.insertBefore(sprite, document.body.firstChild);
         }
 
-        if (!loadedIcons.has(name) && !loadingRef.current) {
-            loadingRef.current = true;
+        fetch(url)
+            .then((response: Response) => response.text())
+            .then((svgText: string) => {
+                const parser = new DOMParser();
+                const svgDoc = parser.parseFromString(svgText, 'image/svg+xml');
+                const svgElement = svgDoc.querySelector('svg');
 
-            fetch(url)
-                .then((response: Response) => response.text())
-                .then((svgText: string) => {
-                    const parser = new DOMParser();
-                    const svgDoc = parser.parseFromString(
-                        svgText,
-                        'image/svg+xml'
+                if (svgElement) {
+                    const symbol = document.createElementNS(
+                        SVG_NAMESPACE,
+                        'symbol'
                     );
-                    const svgElement = svgDoc.querySelector('svg');
 
-                    if (svgElement) {
-                        const symbol = document.createElementNS(
-                            SVG_NAMESPACE,
-                            'symbol'
-                        );
+                    symbol.id = name;
+                    symbol.setAttribute('fill', 'currentColor');
 
-                        symbol.id = name;
-                        symbol.setAttribute('fill', 'currentColor');
-
-                        const viewBox = svgElement.getAttribute('viewBox');
-                        if (viewBox) {
-                            symbol.setAttribute('viewBox', viewBox);
-                        }
-
-                        while (svgElement.firstChild) {
-                            symbol.appendChild(svgElement.firstChild);
-                        }
-
-                        const defs = sprite?.querySelector('defs');
-
-                        defs?.appendChild(symbol);
-                        loadedIcons.add(name);
+                    const viewBox = svgElement.getAttribute('viewBox');
+                    if (viewBox) {
+                        symbol.setAttribute('viewBox', viewBox);
                     }
-                })
-                .catch((error: Error) => {
-                    console.error(`Failed to load icon ${name}:`, error);
-                })
-                .finally(() => {
-                    loadingRef.current = false;
-                });
-        }
+
+                    while (svgElement.firstChild) {
+                        symbol.appendChild(svgElement.firstChild);
+                    }
+
+                    const defs = sprite?.querySelector('defs');
+                    defs?.appendChild(symbol);
+                }
+            })
+            .catch((error: Error) => {
+                loadedIcons.delete(name);
+                console.error(`Failed to load icon ${name}:`, error);
+            });
     }, [name, url]);
 
     return (
