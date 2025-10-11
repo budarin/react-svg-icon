@@ -44,14 +44,14 @@ function App() {
 | `size`     | `number`                  | ❌           | 24           | Размер иконки в пикселях    |
 | `...props` | `SVGProps<SVGSVGElement>` | ❌           | -            | Дополнительные SVG атрибуты |
 
-### DEFAULT_ICON_SIZE
+### setDefaultIconSize
 
-Экспортируемая переменная с размером иконки по умолчанию. Можно изменить глобально:
+Функция для изменения размера иконки по умолчанию глобально:
 
 ```tsx
-import { DEFAULT_ICON_SIZE } from '@budarin/react-svg-icon';
+import { setDefaultIconSize } from '@budarin/react-svg-icon';
 
-DEFAULT_ICON_SIZE = 32; // изменить размер по умолчанию для всех иконок
+setDefaultIconSize(32); // изменить размер по умолчанию для всех иконок
 ```
 
 #### Примеры

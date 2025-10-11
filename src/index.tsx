@@ -7,13 +7,17 @@ interface IconProps extends SVGProps<SVGSVGElement> {
     size?: number | undefined;
 }
 
-export let DEFAULT_ICON_SIZE = 24;
+let DEFAULT_ICON_SIZE = 24;
 
 const loadedIcons = new Set<string>();
 const SPRITE_ID = '@budarin/svg-sprite-container';
 const SVG_NAMESPACE = 'http://www.w3.org/2000/svg';
 const SPRITE_STYLE =
     'position: absolute; width: 0; height: 0; overflow: hidden;';
+
+export function setDefaultIconSize(size: number) {
+    DEFAULT_ICON_SIZE = size;
+}
 
 export function SvgIcon({
     url,
