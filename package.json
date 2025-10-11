@@ -1,0 +1,36 @@
+{
+    "name": "@budarin/react-svg-icon",
+    "author": "Budarin Vadim",
+    "version": "1.0.0",
+    "description": "React component for reusable svg icons",
+    "main": "dist/index.js",
+    "keywords": [
+        "react",
+        "svg",
+        "icon"
+    ],
+    "module": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "files": [
+        "dist"
+    ],
+    "license": "MIT",
+    "devDependencies": {
+        "@types/react": "^19.2.2",
+        "@types/react-dom": "^19.2.1",
+        "prettier": "^3.6.2",
+        "typescript": "^5.9.3"
+    },
+    "peerDependencies": {
+        "react": ">=18.3.1",
+        "react-dom": ">=18.3.1"
+    },
+    "scripts": {
+        "build": "tsc",
+        "type-check": "tsc --noEmit",
+        "pnpm-install": "pnpm install",
+        "upgrade-dependencies": "pnpm upgrade -i",
+        "publish-package": "pnpm build && pnpm publish --access=public"
+    },
+    "packageManager": "pnpm@10.18.2"
+}
