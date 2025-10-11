@@ -10,7 +10,7 @@ interface IconProps extends SVGProps<SVGSVGElement> {
 const SPRITE_ID = '@budarin/svg-sprite-container';
 const loadedIcons = new Set<string>();
 
-export function SvgIcon({ name, url, size = 24, ...props }: IconProps) {
+export function SvgIcon({ name, url, size = 20, ...props }: IconProps) {
     const loadingRef = useRef<boolean>(false);
 
     useEffect(() => {
@@ -53,6 +53,7 @@ export function SvgIcon({ name, url, size = 24, ...props }: IconProps) {
                             'symbol'
                         );
                         symbol.id = `icon-${name}`;
+                        symbol.setAttribute('fill', 'currentColor');
 
                         const viewBox = svgElement.getAttribute('viewBox');
                         if (viewBox) {
