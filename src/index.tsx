@@ -10,7 +10,7 @@ interface IconProps extends SVGProps<SVGSVGElement> {
 const SPRITE_ID = '@budarin/svg-sprite-container';
 const loadedIcons = new Set<string>();
 
-export function Icon({ name, url, size = 24, ...props }: IconProps) {
+export function SvgIcon({ name, url, size = 24, ...props }: IconProps) {
     const loadingRef = useRef<boolean>(false);
 
     useEffect(() => {

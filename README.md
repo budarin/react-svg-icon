@@ -15,18 +15,18 @@ yarn add @budarin/react-svg-icon
 ## Использование
 
 ```tsx
-import { Icon } from '@budarin/react-svg-icon';
+import { SvgIcon } from '@budarin/react-svg-icon';
 
 function App() {
     return (
         <div>
-            <Icon
+            <SvgIcon
                 name="home"
                 url="/icons/home.svg"
                 size={32}
                 className="my-icon"
             />
-            <Icon
+            <SvgIcon
                 name="user"
                 url="https://example.com/icons/user.svg"
                 size={24}
@@ -39,7 +39,7 @@ function App() {
 
 ## API
 
-### Icon
+### SvgIcon
 
 Компонент для отображения SVG иконок.
 
@@ -57,19 +57,19 @@ function App() {
 **Базовое использование:**
 
 ```tsx
-<Icon name="search" url="/icons/search.svg" />
+<SvgIcon name="search" url="/icons/search.svg" />
 ```
 
 **С кастомным размером:**
 
 ```tsx
-<Icon name="heart" url="/icons/heart.svg" size={48} />
+<SvgIcon name="heart" url="/icons/heart.svg" size={48} />
 ```
 
 **С дополнительными атрибутами:**
 
 ```tsx
-<Icon
+<SvgIcon
     name="star"
     url="/icons/star.svg"
     size={20}
