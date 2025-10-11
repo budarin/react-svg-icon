@@ -81,8 +81,10 @@ export function SvgIcon({
                 }
             })
             .catch((error: Error) => {
-                loadedIcons.delete(name);
                 console.error(`Failed to load icon ${name}:`, error);
+            })
+            .finally(() => {
+                loadedIcons.delete(name);
             });
     }, [name, url]);
 
