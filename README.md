@@ -20,16 +20,9 @@ import { SvgIcon } from '@budarin/react-svg-icon';
 function App() {
     return (
         <div>
+            <SvgIcon url="/icons/home.svg" size={32} className="my-icon" />
             <SvgIcon
-                name="home"
-                url="/icons/home.svg"
-                size={32}
-                className="my-icon"
-            />
-            <SvgIcon
-                name="user"
                 url="https://example.com/icons/user.svg"
-                size={24}
                 fill="currentColor"
             />
         </div>
@@ -47,7 +40,6 @@ function App() {
 
 | Prop       | Тип                       | Обязательный | По умолчанию | Описание                    |
 | ---------- | ------------------------- | ------------ | ------------ | --------------------------- |
-| `name`     | `string`                  | ✅           | -            | Уникальное имя иконки       |
 | `url`      | `string`                  | ✅           | -            | URL к SVG файлу             |
 | `size`     | `number`                  | ❌           | `24`         | Размер иконки в пикселях    |
 | `...props` | `SVGProps<SVGSVGElement>` | ❌           | -            | Дополнительные SVG атрибуты |
@@ -57,20 +49,19 @@ function App() {
 **Базовое использование:**
 
 ```tsx
-<SvgIcon name="search" url="/icons/search.svg" />
+<SvgIcon url="/icons/search.svg" />
 ```
 
 **С кастомным размером:**
 
 ```tsx
-<SvgIcon name="heart" url="/icons/heart.svg" size={48} />
+<SvgIcon url="/icons/heart.svg" size={48} />
 ```
 
 **С дополнительными атрибутами:**
 
 ```tsx
 <SvgIcon
-    name="star"
     url="/icons/star.svg"
     size={20}
     fill="gold"

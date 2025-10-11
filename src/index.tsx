@@ -1,16 +1,19 @@
 import type { SVGProps } from 'react';
+
 import { useEffect, useRef } from 'react';
 
 interface IconProps extends SVGProps<SVGSVGElement> {
-    name: string;
     url: string;
-    size?: number;
+    size?: number | undefined;
 }
 
-const SPRITE_ID = '@budarin/svg-sprite-container';
+const DEFAULT_SIZE = 24;
 const loadedIcons = new Set<string>();
+const SPRITE_ID = '@budarin/svg-sprite-container';
+const SVG_NAMESPACE = 'http://www.w3.org/2000/svg';
 
-export function SvgIcon({ name, url, size = 20, ...props }: IconProps) {
+export function SvgIcon({ url, size = DEFAULT_SIZE, ...props }: IconProps) {
+    const name = String(size) + '-' + url;
     const loadingRef = useRef<boolean>(false);
 
     useEffect(() => {
@@ -18,17 +21,14 @@ export function SvgIcon({ name, url, size = 20, ...props }: IconProps) {
 
         if (!sprite) {
             sprite = document.createElementNS(
-                'http://www.w3.org/2000/svg',
+                SVG_NAMESPACE,
                 'svg'
             ) as SVGSVGElement;
             sprite.id = SPRITE_ID;
             sprite.style.display = 'none';
-            sprite.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+            sprite.setAttribute('xmlns', SVG_NAMESPACE);
 
-            const defs = document.createElementNS(
-                'http://www.w3.org/2000/svg',
-                'defs'
-            );
+            const defs = document.createElementNS(SVG_NAMESPACE, 'defs');
             sprite.appendChild(defs);
 
             document.body.insertBefore(sprite, document.body.firstChild);
@@ -49,10 +49,11 @@ export function SvgIcon({ name, url, size = 20, ...props }: IconProps) {
 
                     if (svgElement) {
                         const symbol = document.createElementNS(
-                            'http://www.w3.org/2000/svg',
+                            SVG_NAMESPACE,
                             'symbol'
                         );
-                        symbol.id = `icon-${name}`;
+
+                        symbol.id = name;
                         symbol.setAttribute('fill', 'currentColor');
 
                         const viewBox = svgElement.getAttribute('viewBox');
@@ -65,8 +66,8 @@ export function SvgIcon({ name, url, size = 20, ...props }: IconProps) {
                         }
 
                         const defs = sprite?.querySelector('defs');
-                        defs?.appendChild(symbol);
 
+                        defs?.appendChild(symbol);
                         loadedIcons.add(name);
                     }
                 })
@@ -81,7 +82,7 @@ export function SvgIcon({ name, url, size = 20, ...props }: IconProps) {
 
     return (
         <svg width={size} height={size} {...props}>
-            <use href={`#icon-${name}`} />
+            <use href={`#${name}`} />
         </svg>
     );
 }
