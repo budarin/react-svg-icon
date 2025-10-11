@@ -11,6 +11,8 @@ const DEFAULT_SIZE = 24;
 const loadedIcons = new Set<string>();
 const SPRITE_ID = '@budarin/svg-sprite-container';
 const SVG_NAMESPACE = 'http://www.w3.org/2000/svg';
+const SPRITE_STYLE =
+    'position: absolute; width: 0; height: 0; overflow: hidden;';
 
 export function SvgIcon({ url, size = DEFAULT_SIZE, ...props }: IconProps) {
     const name = String(size) + '-' + url;
@@ -25,7 +27,8 @@ export function SvgIcon({ url, size = DEFAULT_SIZE, ...props }: IconProps) {
                 'svg'
             ) as SVGSVGElement;
             sprite.id = SPRITE_ID;
-            sprite.style.display = 'none';
+            sprite.style = SPRITE_STYLE;
+            sprite.setAttribute('aria-hidden', 'true');
             sprite.setAttribute('xmlns', SVG_NAMESPACE);
 
             const defs = document.createElementNS(SVG_NAMESPACE, 'defs');
@@ -81,7 +84,7 @@ export function SvgIcon({ url, size = DEFAULT_SIZE, ...props }: IconProps) {
     }, [name, url]);
 
     return (
-        <svg width={size} height={size} {...props}>
+        <svg aria-hidden="true" width={size} height={size} {...props}>
             <use href={`#${name}`} />
         </svg>
     );
