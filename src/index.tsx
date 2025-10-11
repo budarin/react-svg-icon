@@ -15,7 +15,7 @@ const SPRITE_STYLE =
     'position: absolute; width: 0; height: 0; overflow: hidden;';
 
 export function SvgIcon({ url, size = DEFAULT_SIZE, ...props }: IconProps) {
-    const name = String(size) + '-' + url;
+    const name = url;
     const loadingRef = useRef<boolean>(false);
 
     useEffect(() => {
