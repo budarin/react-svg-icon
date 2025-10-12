@@ -2,7 +2,8 @@ import type { SVGProps } from 'react';
 
 import { useEffect } from 'react';
 
-const DEFAULT_SIZE = 24;
+let DEFAULT_ICON_SIZE = 24;
+
 const loadedIcons = new Set<string>();
 const SPRITE_ID = '@budarin/svg-sprite-container';
 const SVG_NAMESPACE = 'http://www.w3.org/2000/svg';
@@ -14,7 +15,15 @@ interface IconProps extends SVGProps<SVGSVGElement> {
     size?: number | undefined;
 }
 
-export function SvgIcon({ url, size = DEFAULT_SIZE, ...props }: IconProps) {
+export function setDefaultIconSize(size: number) {
+    DEFAULT_ICON_SIZE = size;
+}
+
+export function SvgIcon({
+    url,
+    size = DEFAULT_ICON_SIZE,
+    ...props
+}: IconProps) {
     const name = url;
 
     useEffect(() => {
@@ -72,11 +81,12 @@ export function SvgIcon({ url, size = DEFAULT_SIZE, ...props }: IconProps) {
                 }
             })
             .catch((error: Error) => {
-                loadedIcons.delete(name);
-
                 if (!props.onError) {
                     console.error(`Failed to load icon ${name}:`, error);
                 }
+            })
+            .finally(() => {
+                loadedIcons.delete(name);
             });
     }, [name, url]);
 
