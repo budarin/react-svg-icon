@@ -85,13 +85,13 @@ setDefaultErrorHandler((error, iconUrl) => {
 <SvgIcon url="/icons/search.svg" />
 ```
 
-**С кастомным размером:**
+**Кастомным размером:**
 
 ```tsx
 <SvgIcon url="/icons/heart.svg" size={48} />
 ```
 
-**С дополнительными атрибутами:**
+**Дополнительными атрибутами:**
 
 ```tsx
 <SvgIcon
@@ -104,7 +104,7 @@ setDefaultErrorHandler((error, iconUrl) => {
 />
 ```
 
-**С глобальной обработкой ошибок:**
+**Глобальной обработкой ошибок:**
 
 ```tsx
 // В index.tsx или App.tsx
