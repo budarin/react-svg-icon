@@ -54,6 +54,29 @@ import { setDefaultIconSize } from '@budarin/react-svg-icon';
 setDefaultIconSize(32); // изменить размер по умолчанию для всех иконок
 ```
 
+### setDefaultErrorHandler
+
+Функция для установки глобального обработчика ошибок загрузки иконок:
+
+```tsx
+import { setDefaultErrorHandler } from '@budarin/react-svg-icon';
+
+// Установить один раз в начале приложения (например, в index.tsx или App.tsx)
+setDefaultErrorHandler((error, iconUrl) => {
+    console.error(`Не удалось загрузить иконку ${iconUrl}:`, error);
+    // Можно отправить в систему мониторинга (Sentry, LogRocket и т.д.)
+    // Можно показать уведомление пользователю
+    // Можно записать в аналитику
+});
+```
+
+**Преимущества:**
+
+- Настраивается один раз для всего приложения
+- Не нужно добавлять `onError` к каждой иконке
+- Единая точка для обработки всех ошибок загрузки
+- Удобно для интеграции с системами мониторинга
+
 #### Примеры
 
 **Базовое использование:**
@@ -78,11 +101,23 @@ setDefaultIconSize(32); // изменить размер по умолчанию
     stroke="orange"
     strokeWidth={2}
     className="star-icon"
-    onError={(event) => {
-        console.log('SVG error event:', event);
-        console.log('Target element:', event.currentTarget);
-    }}
 />
+```
+
+**С глобальной обработкой ошибок:**
+
+```tsx
+// В index.tsx или App.tsx
+import { setDefaultErrorHandler } from '@budarin/react-svg-icon';
+
+setDefaultErrorHandler((error, iconUrl) => {
+    // Ваша логика обработки ошибок для всех иконок
+    console.error(`Ошибка загрузки: ${iconUrl}`, error);
+});
+
+// Теперь все иконки автоматически используют этот обработчик
+<SvgIcon url="/icons/user.svg" />
+<SvgIcon url="/icons/settings.svg" />
 ```
 
 ## Особенности
@@ -90,7 +125,7 @@ setDefaultIconSize(32); // изменить размер по умолчанию
 - **Автоматическая загрузка**: Иконки загружаются только при первом использовании
 - **Кэширование**: Загруженные иконки сохраняются в DOM и не загружаются повторно
 - **SVG Sprite**: Использует SVG sprite для оптимизации производительности
-- **Обработка ошибок**: Автоматическая обработка ошибок загрузки с логированием
+- **Глобальная обработка ошибок**: Настройте обработчик один раз для всех иконок с помощью `setDefaultErrorHandler`
 - **currentColor**: По умолчанию иконки используют `fill="currentColor"` для наследования цвета от родителя
 - **Доступность**: Иконки помечены `aria-hidden="true"` для улучшения accessibility
 - **TypeScript**: Полная поддержка TypeScript с типизацией
