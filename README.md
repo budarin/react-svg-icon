@@ -68,6 +68,10 @@ function App() {
     stroke="orange"
     strokeWidth={2}
     className="star-icon"
+    onError={(event) => {
+        console.log('SVG error event:', event);
+        console.log('Target element:', event.currentTarget);
+    }}
 />
 ```
 
