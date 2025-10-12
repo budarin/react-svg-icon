@@ -72,7 +72,7 @@ export function SvgIcon({
                 const contentType = response.headers.get('content-type');
                 if (!contentType || !contentType.match(/svg|xml/i)) {
                     throw new Error(
-                        `Expected SVG/XML but got "${contentType}" for ${url}`
+                        `Ожидался SVG/XML, но получен "${contentType}" для ${url}`
                     );
                 }
 
@@ -86,13 +86,13 @@ export function SvgIcon({
                 const parserError = svgDoc.querySelector('parsererror');
                 if (parserError) {
                     throw new Error(
-                        `SVG parse error: ${parserError.textContent}`
+                        `Ошибка парсинга SVG: ${parserError.textContent}`
                     );
                 }
 
                 const svgElement = svgDoc.querySelector('svg');
                 if (!svgElement) {
-                    throw new Error(`No <svg> element found in ${url}`);
+                    throw new Error(`<svg> элемент не найден в ${url}`);
                 }
 
                 const symbol = document.createElementNS(
@@ -119,7 +119,7 @@ export function SvgIcon({
                 if (DEFAULT_ERROR_HANDLER) {
                     DEFAULT_ERROR_HANDLER(error, url);
                 } else {
-                    console.error(`Failed to load icon ${url}:`, error);
+                    console.error(`Не удалось загрузить иконку ${url}:`, error);
                 }
             })
             .finally(() => {
