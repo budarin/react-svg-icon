@@ -60,33 +60,60 @@ export function SvgIcon({
         }
 
         fetch(url)
-            .then((response: Response) => response.text())
+            .then((response: Response) => {
+                // Проверка HTTP статуса
+                if (!response.ok) {
+                    throw new Error(
+                        `HTTP ${response.status}: ${response.statusText}`
+                    );
+                }
+
+                // Проверка Content-Type
+                const contentType = response.headers.get('content-type');
+                if (!contentType || !contentType.match(/svg|xml/i)) {
+                    throw new Error(
+                        `Expected SVG/XML but got "${contentType}" for ${url}`
+                    );
+                }
+
+                return response.text();
+            })
             .then((svgText: string) => {
                 const parser = new DOMParser();
                 const svgDoc = parser.parseFromString(svgText, 'image/svg+xml');
-                const svgElement = svgDoc.querySelector('svg');
 
-                if (svgElement) {
-                    const symbol = document.createElementNS(
-                        SVG_NAMESPACE,
-                        'symbol'
+                // Проверка на ошибки парсинга
+                const parserError = svgDoc.querySelector('parsererror');
+                if (parserError) {
+                    throw new Error(
+                        `SVG parse error: ${parserError.textContent}`
                     );
-
-                    symbol.id = name;
-                    symbol.setAttribute('fill', 'currentColor');
-
-                    const viewBox = svgElement.getAttribute('viewBox');
-                    if (viewBox) {
-                        symbol.setAttribute('viewBox', viewBox);
-                    }
-
-                    while (svgElement.firstChild) {
-                        symbol.appendChild(svgElement.firstChild);
-                    }
-
-                    const defs = sprite?.querySelector('defs');
-                    defs?.appendChild(symbol);
                 }
+
+                const svgElement = svgDoc.querySelector('svg');
+                if (!svgElement) {
+                    throw new Error(`No <svg> element found in ${url}`);
+                }
+
+                const symbol = document.createElementNS(
+                    SVG_NAMESPACE,
+                    'symbol'
+                );
+
+                symbol.id = name;
+                symbol.setAttribute('fill', 'currentColor');
+
+                const viewBox = svgElement.getAttribute('viewBox');
+                if (viewBox) {
+                    symbol.setAttribute('viewBox', viewBox);
+                }
+
+                while (svgElement.firstChild) {
+                    symbol.appendChild(svgElement.firstChild);
+                }
+
+                const defs = sprite?.querySelector('defs');
+                defs?.appendChild(symbol);
             })
             .catch((error: Error) => {
                 if (DEFAULT_ERROR_HANDLER) {
