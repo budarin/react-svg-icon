@@ -104,21 +104,6 @@ setDefaultErrorHandler((error, iconUrl) => {
 />
 ```
 
-**Глобальной обработкой ошибок:**
-
-```tsx
-// В index.tsx или App.tsx
-import { setDefaultErrorHandler } from '@budarin/react-svg-icon';
-
-setDefaultErrorHandler((error, iconUrl) => {
-    // Ваша логика обработки ошибок для всех иконок
-    console.error(`Ошибка загрузки: ${iconUrl}`, error);
-});
-
-// Теперь все иконки автоматически используют этот обработчик
-<SvgIcon url="/icons/user.svg" />
-<SvgIcon url="/icons/settings.svg" />
-```
 
 ## Особенности
 
