@@ -105,6 +105,62 @@ setDefaultErrorHandler((error, iconUrl) => {
 />
 ```
 
+### Фабрика иконок
+
+На базе пакета можно создавать собственные фабрики иконок, чтобы централизованно задавать
+размеры, стили и имя компонента.
+
+```tsx
+import type { CSSProperties, FC, SVGProps } from 'react';
+
+import { SvgIcon } from '@budarin/react-svg-icon';
+
+type CreateSvgIconParams = {
+    url: unknown;
+    size?: number;
+    defaultStyle?: CSSProperties;
+    displayName?: string;
+};
+
+const BASE_FONT_SIZE = 16;
+
+export const createSvgIcon = ({
+    url,
+    size,
+    defaultStyle,
+    displayName,
+}: CreateSvgIconParams): FC<SVGProps<SVGSVGElement>> => {
+    const IconComponent: FC<SVGProps<SVGSVGElement>> = ({ style, ...props }) => {
+        if (typeof url !== 'string') {
+            throw new TypeError('createSvgIcon: url must be a string');
+        }
+
+        const sizeInRem =
+            typeof size === 'number' ? `${size / BASE_FONT_SIZE}rem` : undefined;
+
+        const sizeStyle: CSSProperties | undefined = sizeInRem
+            ? {
+                  blockSize: sizeInRem,
+                  inlineSize: sizeInRem,
+              }
+            : undefined;
+
+        const mergedStyle =
+            sizeStyle || defaultStyle || style
+                ? { ...sizeStyle, ...defaultStyle, ...style }
+                : undefined;
+
+        return <SvgIcon {...props} url={url} style={mergedStyle} />;
+    };
+
+    if (displayName) {
+        IconComponent.displayName = displayName;
+    }
+
+    return IconComponent;
+};
+```
+
 
 ## Особенности
 
