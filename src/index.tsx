@@ -2,7 +2,7 @@ import type { SVGProps } from 'react';
 
 import { useEffect } from 'react';
 
-let DEFAULT_ICON_SIZE = 24;
+let DEFAULT_ICON_SIZE: number | string = 24;
 let DEFAULT_ERROR_HANDLER: ((error: Error, iconUrl: string) => void) | null =
     null;
 
@@ -14,10 +14,10 @@ const SPRITE_STYLE =
 
 interface IconProps extends SVGProps<SVGSVGElement> {
     url: string;
-    size?: number | undefined;
+    size?: number | string | undefined;
 }
 
-export function setDefaultIconSize(size: number) {
+export function setDefaultIconSize(size: number | string) {
     DEFAULT_ICON_SIZE = size;
 }
 

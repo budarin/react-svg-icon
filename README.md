@@ -41,7 +41,7 @@ function App() {
 | Prop       | Тип                       | Обязательный | По умолчанию | Описание                    |
 | ---------- | ------------------------- | ------------ | ------------ | --------------------------- |
 | `url`      | `string`                  | ✅           | -            | URL к SVG файлу             |
-| `size`     | `number`                  | ❌           | 24           | Размер иконки в пикселях    |
+| `size`     | `number \| string`        | ❌           | 24           | Размер иконки (например: `24`, `1.5rem`, `100%`) |
 | `...props` | `SVGProps<SVGSVGElement>` | ❌           | -            | Дополнительные SVG атрибуты |
 
 ### setDefaultIconSize
@@ -52,6 +52,7 @@ function App() {
 import { setDefaultIconSize } from '@budarin/react-svg-icon';
 
 setDefaultIconSize(32); // изменить размер по умолчанию для всех иконок
+setDefaultIconSize('1.5rem'); // CSS-значение тоже поддерживается
 ```
 
 ### setDefaultErrorHandler
